@@ -1,3 +1,5 @@
+const SpecifiedRecord = require('./SpecifiedRecord');
+
 class SocialPerformanceRecord {
     constructor(department, totalBonus, year, leadershipCompetence, opennessToEmployee, socialBehaviorToEmployee, attitudeToClients, communicationSkills, integrityToCompany) {
         this.department = department;
@@ -88,3 +90,5 @@ class SocialPerformanceRecord {
         );
     }
 }
+
+module.exports = SocialPerformanceRecord;

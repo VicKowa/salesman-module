@@ -1,3 +1,5 @@
+const ManagePersonal = require('./ManagePersonal');
+
 class SalesmanListImpl extends ManagePersonal{
     constructor() {
         super();
@@ -22,6 +24,10 @@ class SalesmanListImpl extends ManagePersonal{
         } else {
             console.log(`Salesman with sid ${salesMan.sid} not found`);
         }
+    }
+
+    checkSalesMan(sid) {
+        return this.salesmen.find(s => s.sid === sid);
     }
 
     readSalesMan(sid) {
@@ -53,3 +59,4 @@ class SalesmanListImpl extends ManagePersonal{
         }
     }
 }
+module.exports = SalesmanListImpl;
