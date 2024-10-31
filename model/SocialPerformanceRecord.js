@@ -88,3 +88,5 @@ class SocialPerformanceRecord {
         );
     }
 }
+
+module.exports = SocialPerformanceRecord;

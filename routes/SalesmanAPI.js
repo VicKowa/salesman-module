@@ -1,6 +1,9 @@
-
 const express = require('express');
 var router = express.Router();
+
+const SalesmanListImpl = require('../model/SalesmanListImpl');
+const SalesmanData = new SalesmanListImpl();
+const SocialPerformanceRecord = require('../model/SocialPerformanceRecord');
 
 // GET Requests
 //getAllSalesman
@@ -11,13 +14,27 @@ router.get('/salesman', (req, res) => {
 // getSalesman(int id)
 router.get('/salesman/:id', (req, res) => {
     const userid = req.params.id;
-    res.send('your id is ' + userid);
+
+    console.log(SalesmanData.readSalesMan(userid));
+
+    if (SalesmanData.readSalesMan(userid) === null) {
+        // not found exception
+        res.status(404).send('Salesman not found');
+    } else {
+        res.status(200).send(SalesmanData.readSalesMan(userid));
+    }
 });
 
 //getSocialPerformanceRecord(int id)
 router.get('/salesman/:id/spr/', (req, res) => {
-    req.params.id;
-    res.send('your id is  hallo ');
+    const userid = req.params.id;
+
+    if (SalesmanData.readSalesMan(userid) === null) {
+        // not found exception
+        res.status(404).send('Salesman not found');
+    } else {
+        res.status(200).send(SalesmanData.readSocialPerformanceRecord(userid));
+    }
 });
 
 // Post Requests
