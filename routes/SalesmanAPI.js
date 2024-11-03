@@ -1,4 +1,3 @@
-
 const express = require('express');
 var router = express.Router();
 
@@ -23,13 +22,27 @@ router.get('/salesman', (req, res) => {
 // getSalesman(int id)
 router.get('/salesman/:id', (req, res) => {
     const userid = req.params.id;
-    res.send('your id is ' + userid);
+
+    console.log(salesmanData.readSalesMan(userid));
+
+    if (salesmanData.readSalesMan(userid) === null) {
+        // not found exception
+        res.status(404).send('Salesman not found');
+    } else {
+        res.status(200).send(salesmanData.readSalesMan(userid));
+    }
 });
 
 //getSocialPerformanceRecord(int id)
 router.get('/salesman/:id/spr/', (req, res) => {
-    req.params.id;
-    res.send('your id is  hallo ');
+    const userid = req.params.id;
+
+    if (salesmanData.readSalesMan(userid) === null) {
+        // not found exception
+        res.status(404).send('Salesman not found');
+    } else {
+        res.status(200).send(salesmanData.readSocialPerformanceRecord(userid));
+    }
 });
 
 // Post Requests

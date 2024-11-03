@@ -1,4 +1,7 @@
-const ManagePersonal = require('./ManagePersonal');
+let ManagePersonal = require('./ManagePersonal');
+let Salesman = require('./Salesman');
+let SocialPerformanceRecord = require('./SocialPerformanceRecord');
+let SpecifiedRecord = require('./SpecifiedRecord');
 
 class SalesmanListImpl extends ManagePersonal{
     constructor() {
@@ -19,14 +22,21 @@ class SalesmanListImpl extends ManagePersonal{
 
     addSocialPerformanceRecord(record, salesMan) {
         const records = this.performanceRecordsMap.get(salesMan.sid);
+
         if (records) {
+            console.log(`Adding record to ${salesMan.firstname} ${salesMan.lastname}`);
+
             records.push(record);
+            this.performanceRecordsMap.set(salesMan, records);
         } else {
             console.log(`Salesman with sid ${salesMan.sid} not found`);
         }
     }
 
     readSalesMan(sid) {
+        // convert sid to int
+        sid = parseInt(sid);
+
         return this.salesmen.find(s => s.sid === sid) || null;
     }
 
@@ -34,8 +44,18 @@ class SalesmanListImpl extends ManagePersonal{
         return this.salesmen;
     }
 
-    readSocialPerformanceRecord(salesMan) {
-        return this.performanceRecordsMap.get(salesMan.sid) || [];
+    readSocialPerformanceRecord(sid) {
+        // parse sid to int
+        sid = parseInt(sid);
+
+        // find corresponging salesMan to sid
+        const salesMan = this.salesmen.find(s => s.sid === sid);
+
+        if (!salesMan) {
+            return [];
+        }
+
+        return this.performanceRecordsMap.get(salesMan) || [];
     }
 
     removeSalesMan(salesMan) {

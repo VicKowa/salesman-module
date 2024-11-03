@@ -27,3 +27,5 @@ class ManagePersonal {
         throw new Error("Method 'removeSocialPerformanceRecord' must be implemented.");
     }
 }
+
+module.exports = ManagePersonal;

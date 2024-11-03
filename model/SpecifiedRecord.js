@@ -41,3 +41,5 @@ class SpecifiedRecord {
         );
     }
 }
+
+module.exports = SpecifiedRecord;

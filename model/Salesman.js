@@ -52,3 +52,5 @@ class SalesMan {
         );
     }
 }
+
+module.exports = SalesMan;
