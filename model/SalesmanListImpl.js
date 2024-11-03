@@ -7,32 +7,7 @@ class SalesmanListImpl extends ManagePersonal{
     constructor() {
         super();
         this.salesmen = []; // List of SalesMan records
-        this.performanceRecordsMap = new Map(); // Map of SalesMan to their SocialPerformanceRecords
-
-        // example data for testing
-        const salesman = new Salesman('John', 'Doe', 1);
-        this.createSalesMan(salesman);
-
-        const leadershipCompetence = new SpecifiedRecord('Leadership Competence', 10, 8, 1000);
-        const opennessToEmployee = new SpecifiedRecord('Openness to Employee', 10, 8, 1000);
-        const socialBehaviorToEmployee = new SpecifiedRecord('Social Behavior to Employee', 10, 8, 1000);
-        const attitudeToClients = new SpecifiedRecord('Attitude to Clients', 10, 8, 1000);
-        const communicationSkills = new SpecifiedRecord('Communication Skills', 10, 8, 1000);
-        const integrityToCompany = new SpecifiedRecord('Integrity to Company', 10, 8, 1000);
-
-        const record = new SocialPerformanceRecord(
-            'Department',
-            1000,
-            2021,
-            leadershipCompetence,
-            opennessToEmployee,
-            socialBehaviorToEmployee,
-            attitudeToClients,
-            communicationSkills,
-            integrityToCompany
-        );
-
-        this.addSocialPerformanceRecord(record, salesman);
+        this.performanceRecordsMap = new Map(); // Map of SalesMan Ids to their SocialPerformanceRecords (Array)
     }
 
     createSalesMan(salesMan) {
@@ -42,11 +17,11 @@ class SalesmanListImpl extends ManagePersonal{
             return;
         }
         this.salesmen.push(salesMan);
-        this.performanceRecordsMap.set(salesMan, []); // Initialize an empty record list for the new SalesMan
+        this.performanceRecordsMap.set(salesMan.sid, []); // Initialize an empty record list for the new SalesMan
     }
 
     addSocialPerformanceRecord(record, salesMan) {
-        const records = this.performanceRecordsMap.get(salesMan);
+        const records = this.performanceRecordsMap.get(salesMan.sid);
 
         if (records) {
             console.log(`Adding record to ${salesMan.firstname} ${salesMan.lastname}`);
@@ -85,14 +60,14 @@ class SalesmanListImpl extends ManagePersonal{
 
     removeSalesMan(salesMan) {
         this.salesmen = this.salesmen.filter(s => s.sid !== salesMan.sid);
-        this.performanceRecordsMap.delete(salesMan);
+        this.performanceRecordsMap.delete(salesMan.sid);
     }
 
     removeSocialPerformanceRecord(record, salesMan) {
-        const records = this.performanceRecordsMap.get(salesMan);
+        const records = this.performanceRecordsMap.get(salesMan.sid);
         if (records) {
             this.performanceRecordsMap.set(
-                salesMan,
+                salesMan.sid,
                 records.filter(r => r.details !== record.details)
             );
         } else {

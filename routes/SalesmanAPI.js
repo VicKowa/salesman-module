@@ -2,26 +2,34 @@ const express = require('express');
 var router = express.Router();
 
 const SalesmanListImpl = require('../model/SalesmanListImpl');
-const SalesmanData = new SalesmanListImpl();
 const SocialPerformanceRecord = require('../model/SocialPerformanceRecord');
+const salesmanData = new SalesmanListImpl();
 
 // GET Requests
 //getAllSalesman
 router.get('/salesman', (req, res) => {
-    res.send('Get all salesmen (To be implemented)');
+    const salesManList = salesmanData.readAllSalesMen()
+
+    if (salesManList == null) {
+        // not found exception
+        res.status(404).send("No salesmen found");
+        return;
+    }
+
+    res.status(200).send(salesManList);
 });
 
 // getSalesman(int id)
 router.get('/salesman/:id', (req, res) => {
     const userid = req.params.id;
 
-    console.log(SalesmanData.readSalesMan(userid));
+    console.log(salesmanData.readSalesMan(userid));
 
-    if (SalesmanData.readSalesMan(userid) === null) {
+    if (salesmanData.readSalesMan(userid) === null) {
         // not found exception
         res.status(404).send('Salesman not found');
     } else {
-        res.status(200).send(SalesmanData.readSalesMan(userid));
+        res.status(200).send(salesmanData.readSalesMan(userid));
     }
 });
 
@@ -29,11 +37,11 @@ router.get('/salesman/:id', (req, res) => {
 router.get('/salesman/:id/spr/', (req, res) => {
     const userid = req.params.id;
 
-    if (SalesmanData.readSalesMan(userid) === null) {
+    if (salesmanData.readSalesMan(userid) === null) {
         // not found exception
         res.status(404).send('Salesman not found');
     } else {
-        res.status(200).send(SalesmanData.readSocialPerformanceRecord(userid));
+        res.status(200).send(salesmanData.readSocialPerformanceRecord(userid));
     }
 });
 
@@ -58,9 +66,29 @@ router.delete('/salesman/:id', (req, res) => {
 });
 
 // deleteSocialPerformanceRecord(int id, SPR record)
-router.delete('/salesman/:id/spr', (req, res) => {
-    req.params.id;
-    res.send('Get all salesmen (To be implemented)7');
+router.delete('/salesman/:id/spr/:idx', (req, res) => {
+    const userid = parseInt(req.params.id);
+    const idx = parseInt(req.params.idx);
+
+    const salesMan = salesmanData.readSalesMan(userid);
+
+    if (salesMan == null) {
+        // not found exception
+        res.status(404).send("No salesman found");
+        return;
+    }
+
+    const salesManRecords = salesmanData.readSocialPerformanceRecord(salesMan);
+
+    if(salesManRecords.length <= idx){
+        // not found exception
+        res.status(404).send("No record found");
+        return;
+    }
+
+    salesmanData.removeSocialPerformanceRecord(salesManRecords[idx], salesMan);
+
+    res.status(200).send("The salesman record has been deleted");
 });
 
 module.exports = router;
