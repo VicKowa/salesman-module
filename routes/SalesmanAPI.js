@@ -1,8 +1,5 @@
 const express = require('express');
 var router = express.Router();
-const SalesmanListImpl = require('../model/SalesmanListImpl');
-const SalesmanData = new SalesmanListImpl();
-const SocialPerformanceRecord = require('../model/SocialPerformanceRecord');
 
 const SalesmanListImpl = require('../model/SalesmanListImpl');
 const SocialPerformanceRecord = require('../model/SocialPerformanceRecord');
@@ -24,7 +21,7 @@ router.get('/salesman', (req, res) => {
 
 // getSalesman(int id)
 router.get('/salesman/:id', (req, res) => {
-    const userid = req.params.id;
+    const userid = parseInt(req.params.id);
 
     console.log(salesmanData.readSalesMan(userid));
 
@@ -38,13 +35,20 @@ router.get('/salesman/:id', (req, res) => {
 
 //getSocialPerformanceRecord(int id)
 router.get('/salesman/:id/spr/', (req, res) => {
-    const userid = req.params.id;
+    const userid = parseInt(req.params.id);
 
     if (salesmanData.readSalesMan(userid) === null) {
         // not found exception
         res.status(404).send('Salesman not found');
     } else {
-        res.status(200).send(salesmanData.readSocialPerformanceRecord(userid));
+        let salesman = salesmanData.readSalesMan(userid);
+
+        if (!salesman) {
+            res.status(404).send('Salesman not found');
+            return;
+        }
+
+        res.status(200).send(salesmanData.readSocialPerformanceRecord(salesman));
     }
 });
 
@@ -57,7 +61,7 @@ router.post('/salesman', (req, res) => {
         res.status(400).send('Please provide all required fields');
         return;
     }
-    if(SalesmanData.readSalesMan(body.sid)) {
+    if(salesmanData.readSalesMan(body.sid)) {
         res.status(400).send('Salesman with sid already exists');
         return;
     }
@@ -65,7 +69,7 @@ router.post('/salesman', (req, res) => {
     const firstname = body.firstname;
     const lastname = body.lastname;
 
-    SalesmanData.createSalesMan({sid, firstname, lastname});
+    salesmanData.createSalesMan({sid, firstname, lastname});
     res.send('Salesman created successfully');
 
 });
@@ -83,23 +87,33 @@ router.post('/salesman/:id/spr', (req, res) => {
         res.status(400).send('Please provide body!');
         return;
     }
-    if(!SalesmanData.readSalesMan(userid)) {
+    if(!salesmanData.readSalesMan(userid)) {
         res.status(400).send('Salesman with sid does not exists');
         return;
     }
 
-    const salesman = SalesmanData.readSalesMan(userid);
+    const salesman = salesmanData.readSalesMan(userid);
     const socialPerformanceRecord = SocialPerformanceRecord.documentToSocialPerformanceRecord(body);
-    SalesmanData.addSocialPerformanceRecord(socialPerformanceRecord, salesman);
+    salesmanData.addSocialPerformanceRecord(socialPerformanceRecord, salesman);
     res.send('Social Performance Record added successfully');
 });
 
 
 // DELETE Requests
+
 // deleteSalesman(int id)
 router.delete('/salesman/:id', (req, res) => {
-    req.params.id;
-    res.send('Get all salesmen (To be implemented)6');
+    const userid = parseInt(req.params.id);
+    let salesman = salesmanData.readSalesMan(userid);
+
+    if (!salesman) {
+        // not found exception
+        res.status(404).send('Salesman not found');
+        return;
+    }
+
+    salesmanData.removeSalesMan(salesman);
+    res.status(200).send('Salesman deleted successfully');
 });
 
 // deleteSocialPerformanceRecord(int id, SPR record)

@@ -21,6 +21,12 @@ class SalesmanListImpl extends ManagePersonal{
     }
 
     addSocialPerformanceRecord(record, salesMan) {
+        console.log('Adding record: ');
+        console.log(salesMan);
+
+        console.log(typeof salesMan.sid);
+        console.log('---');
+
         const records = this.performanceRecordsMap.get(salesMan.sid);
 
         if (records) {
@@ -48,18 +54,14 @@ class SalesmanListImpl extends ManagePersonal{
         return this.salesmen;
     }
 
-    readSocialPerformanceRecord(sid) {
-        // parse sid to int
-        sid = parseInt(sid);
+    readSocialPerformanceRecord(salesMan) {
+        console.log('Reading record: ');
+        console.log(salesMan);
 
-        // find corresponging salesMan to sid
-        const salesMan = this.salesmen.find(s => s.sid === sid);
+        console.log(typeof salesMan.sid);
+        console.log('---');
 
-        if (!salesMan) {
-            return [];
-        }
-
-        return this.performanceRecordsMap.get(salesMan) || [];
+        return this.performanceRecordsMap.get(salesMan.sid) || [];
     }
 
     removeSalesMan(salesMan) {
