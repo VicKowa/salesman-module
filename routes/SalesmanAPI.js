@@ -70,7 +70,7 @@ router.post('/salesman', (req, res) => {
     const lastname = body.lastname;
 
     salesmanData.createSalesMan({sid, firstname, lastname});
-    res.send('Salesman created successfully');
+    res.status(200).send('Salesman created successfully');
 
 });
 
@@ -95,7 +95,7 @@ router.post('/salesman/:id/spr', (req, res) => {
     const salesman = salesmanData.readSalesMan(userid);
     const socialPerformanceRecord = SocialPerformanceRecord.documentToSocialPerformanceRecord(body);
     salesmanData.addSocialPerformanceRecord(socialPerformanceRecord, salesman);
-    res.send('Social Performance Record added successfully');
+    res.status(200).send('Social Performance Record added successfully');
 });
 
 
