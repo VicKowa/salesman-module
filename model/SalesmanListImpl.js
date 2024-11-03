@@ -1,8 +1,10 @@
+const ManagePersonal = require('./ManagePersonal');
+
 class SalesmanListImpl extends ManagePersonal{
     constructor() {
         super();
         this.salesmen = []; // List of SalesMan records
-        this.performanceRecordsMap = new Map(); // Map of SalesMan to their SocialPerformanceRecords
+        this.performanceRecordsMap = new Map(); // Map of SalesMan Ids to their SocialPerformanceRecords (Array)
     }
 
     createSalesMan(salesMan) {
@@ -12,11 +14,11 @@ class SalesmanListImpl extends ManagePersonal{
             return;
         }
         this.salesmen.push(salesMan);
-        this.performanceRecordsMap.set(salesMan, []); // Initialize an empty record list for the new SalesMan
+        this.performanceRecordsMap.set(salesMan.sid, []); // Initialize an empty record list for the new SalesMan
     }
 
     addSocialPerformanceRecord(record, salesMan) {
-        const records = this.performanceRecordsMap.get(salesMan);
+        const records = this.performanceRecordsMap.get(salesMan.sid);
         if (records) {
             records.push(record);
         } else {
@@ -33,19 +35,19 @@ class SalesmanListImpl extends ManagePersonal{
     }
 
     readSocialPerformanceRecord(salesMan) {
-        return this.performanceRecordsMap.get(salesMan) || [];
+        return this.performanceRecordsMap.get(salesMan.sid) || [];
     }
 
     removeSalesMan(salesMan) {
         this.salesmen = this.salesmen.filter(s => s.sid !== salesMan.sid);
-        this.performanceRecordsMap.delete(salesMan);
+        this.performanceRecordsMap.delete(salesMan.sid);
     }
 
     removeSocialPerformanceRecord(record, salesMan) {
-        const records = this.performanceRecordsMap.get(salesMan);
+        const records = this.performanceRecordsMap.get(salesMan.sid);
         if (records) {
             this.performanceRecordsMap.set(
-                salesMan,
+                salesMan.sid,
                 records.filter(r => r.details !== record.details)
             );
         } else {
@@ -53,3 +55,5 @@ class SalesmanListImpl extends ManagePersonal{
         }
     }
 }
+
+module.exports = SalesmanListImpl;
