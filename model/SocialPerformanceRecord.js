@@ -1,3 +1,5 @@
+const SpecifiedRecord = require('./SpecifiedRecord');
+
 class SocialPerformanceRecord {
     constructor(department, totalBonus, year, leadershipCompetence, opennessToEmployee, socialBehaviorToEmployee, attitudeToClients, communicationSkills, integrityToCompany) {
         this.department = department;
@@ -75,18 +77,7 @@ class SocialPerformanceRecord {
 
         return new SocialPerformanceRecord(department, totalBonus, year, leadershipCompetence, opennessToEmployee, socialBehaviorToEmployee, attitudeToClients, communicationSkills, integrityToCompany);
     }
-
-    equals(other) {
-        if (!(other instanceof SocialPerformanceRecord)) return false;
-        return (
-            this.leadershipCompetence === other.leadershipCompetence &&
-            this.opennessToEmployee === other.opennessToEmployee &&
-            this.socialBehaviorToEmployee === other.socialBehaviorToEmployee &&
-            this.attitudeToClients === other.attitudeToClients &&
-            this.communicationSkills === other.communicationSkills &&
-            this.integrityToCompany === other.integrityToCompany
-        );
-    }
 }
+
 
 module.exports = SocialPerformanceRecord;

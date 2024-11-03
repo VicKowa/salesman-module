@@ -1,7 +1,7 @@
-let ManagePersonal = require('./ManagePersonal');
-let Salesman = require('./Salesman');
-let SocialPerformanceRecord = require('./SocialPerformanceRecord');
-let SpecifiedRecord = require('./SpecifiedRecord');
+const ManagePersonal = require('./ManagePersonal');
+const Salesman = require('./Salesman');
+const SocialPerformanceRecord = require('./SocialPerformanceRecord');
+const SpecifiedRecord = require('./SpecifiedRecord');
 
 class SalesmanListImpl extends ManagePersonal{
     constructor() {
@@ -31,6 +31,10 @@ class SalesmanListImpl extends ManagePersonal{
         } else {
             console.log(`Salesman with sid ${salesMan.sid} not found`);
         }
+    }
+
+    checkSalesMan(sid) {
+        return this.salesmen.find(s => s.sid === sid);
     }
 
     readSalesMan(sid) {
