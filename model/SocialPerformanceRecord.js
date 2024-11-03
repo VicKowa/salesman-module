@@ -68,6 +68,7 @@ class SocialPerformanceRecord {
         const department = document.department;
         const totalBonus = document.totalBonus;
         const year = new Date(document.year); // Convert to Date object
+
         const leadershipCompetence = SpecifiedRecord.documentToSpecifiedRecord(document.leadershipCompetence);
         const opennessToEmployee = SpecifiedRecord.documentToSpecifiedRecord(document.opennessToEmployee);
         const socialBehaviorToEmployee = SpecifiedRecord.documentToSpecifiedRecord(document.socialBehaviorToEmployee);
